@@ -38,7 +38,6 @@ module.exports = {
           .then((user) => res.json(user))
           .catch((err) => res.status(500).json(err));
       },
-
     addFriend(req, res) {
         User.findOneAndUpdate(
           { _id: req.params.userId },
