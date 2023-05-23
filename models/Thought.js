@@ -1,4 +1,39 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, default: Mongoose} = require('mongoose');
+
+// Reactions schema
+const reactionSchema = new Schema(
+    {
+        reactionId: {
+            type: Schema.Types.ObjectId,
+            // See note 3 in README.md
+            default: () => new Mongoose.Types.ObjectId()
+        },
+        reactionBody: {
+            type: String,
+            required: true,
+            // Must be between 1 and 280 characters
+            minlength: 1,
+            maxlength: 280
+        },
+        username: {
+            type: String,
+            required: true
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now(),
+            // Use a getter method to format the timestamp on query
+            get: (createdAtVal) => dateFormat(createdAtVal)
+        }
+    },
+    {
+        toJSON: {
+            getters: true
+        }
+    }
+);
+
+
 
 // dateFormat function that will format the timestamp on query
 const dateFormat = require('../utils/dateFormat.js');
@@ -23,7 +58,7 @@ const thoughtSchema = new Schema(
             type: String,
             required: true
         },
-        reactions: []
+        reactions: [reactionSchema]
     },
     {
         toJSON: {
