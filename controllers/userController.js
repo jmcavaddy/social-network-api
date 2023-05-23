@@ -8,8 +8,13 @@ module.exports = {
       },
     getSingleUser(req, res) {
         User.findOne({ _id: req.params.userId })
+          .populate({path: 'friends', select: '-__v'})
+          .populate({path: 'thoughts', select: '-__v'})
           .then((user) => res.json(user))
-          .catch((err) => res.status(500).json(err));
+          .catch((err) => {
+            console.log(err);
+            res.status(400).json(err);
+          });
       },
     getAllUsers(req, res) {
         User.find({})
