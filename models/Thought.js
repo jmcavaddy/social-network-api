@@ -5,7 +5,7 @@ const reactionSchema = new Schema(
     {
         reactionId: {
             type: Schema.Types.ObjectId,
-            // See note 3 in README.md
+            // See note 2 in README.md
             default: () => new Mongoose.Types.ObjectId()
         },
         reactionBody: {
