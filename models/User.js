@@ -13,8 +13,6 @@ const userSchema = new Schema(
         type: String,
         required: true,
         unique: true,
-    // I added this to standardize the email format; it comes from note 1 in README.md
-        lowercase: true,
     // See note 1 in README.md
         match: [/^.+@(?:[\w-]+\.)+\w+$/, 'Please fill a valid email address']
         },
@@ -33,13 +31,17 @@ const userSchema = new Schema(
   },
   {
     toJSON: {
-        // TODO: come back and make sense of getters and setters; when do I need to include this?
-        // setters: true,
-        // getters: true,
-        virtuals: true
+        virtuals: true,
+        getters: true,
     },
   }
 );
+
+// virtual property to count number of friends
+userSchema.virtual('friendCount').get(function() {
+    return this.friends.length;
+});
+
 
 const User = model('user', userSchema);
 
